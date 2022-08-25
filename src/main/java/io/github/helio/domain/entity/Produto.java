@@ -1,11 +1,21 @@
 package io.github.helio.domain.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "produto")
 public class Produto    {
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
-    private String nome;
+
+    @Column(name = "descricao")
+    private String descriçao;
+
+    @Column(name = "preco_unitario")
     private BigDecimal preco;
 
     public Integer getId() {
@@ -17,11 +27,11 @@ public class Produto    {
     }
 
     public String getNome() {
-        return nome;
+        return descriçao;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.descriçao = nome;
     }
 
     public BigDecimal getPreco() {
