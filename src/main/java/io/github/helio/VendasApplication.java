@@ -1,15 +1,17 @@
 package io.github.helio;
 
 import io.github.helio.domain.entity.Cliente;
-import io.github.helio.domain.repositorio.Clientes;
+import io.github.helio.domain.entity.Pedido;
+import io.github.helio.domain.repository.Clientes;
+import io.github.helio.domain.repository.Pedidos;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -18,15 +20,27 @@ import java.util.List;
 public class VendasApplication {
 
     @Bean
-    public CommandLineRunner init(@Autowired Clientes clientes) {
+    public CommandLineRunner init(
+            @Autowired Clientes clientes,
+            @Autowired Pedidos pedidos
+    ) {
         return args -> {
             System.out.println("Salvando clientes");
-            clientes.save(new Cliente("Helio"));
-            clientes.save(new Cliente("Cliente-Thiago"));
+            Cliente fulano = new Cliente("Fulano");
+            clientes.save(fulano);
 
+            Pedido p = new Pedido();
+            p.setCliente(fulano);
+            p.setDataPedido(LocalDate.now());
+            p.setTotal(BigDecimal.valueOf(100));
 
-            List<Cliente> result = clientes.encontrarPorNome("Helio");
-            System.out.println("Existe cliente com nome Hélio " + result);
+            pedidos.save(p);
+
+//            Cliente cliente = clientes.findClienteFetchPedidos(fulano.getId());
+//            System.out.println(cliente);
+//            System.out.println(cliente.getPedidos());
+
+            pedidos.findByCliente(fulano).forEach(System.out::println);
 
 
 

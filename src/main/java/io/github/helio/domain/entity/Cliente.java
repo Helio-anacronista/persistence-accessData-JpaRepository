@@ -1,11 +1,10 @@
 package io.github.helio.domain.entity;
 
 import javax.persistence.*;
-import java.lang.annotation.Target;
 import java.util.Set;
 
 @Entity
-@Table(name = "cliente")
+@Table( name = "cliente" )
 public class Cliente {
 
     @Id
@@ -16,8 +15,11 @@ public class Cliente {
     @Column(name = "nome", length = 100)
     private String nome;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany( mappedBy = "cliente" , fetch = FetchType.LAZY )
     private Set<Pedido> pedidos;
+
+    public Cliente() {
+    }
 
     public Set<Pedido> getPedidos() {
         return pedidos;
@@ -27,15 +29,12 @@ public class Cliente {
         this.pedidos = pedidos;
     }
 
-    public Cliente() {
-    }
-
-    public Cliente(String nome) {
+    public Cliente(Integer id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
-    public Cliente(Integer id, String nome) {
-        this.id = id;
+    public Cliente(String nome) {
         this.nome = nome;
     }
 
@@ -58,8 +57,8 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente{" +
-                "id= " + id +
-                ", nome= '" + nome + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
                 '}';
     }
 }
